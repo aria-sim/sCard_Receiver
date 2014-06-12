@@ -74,7 +74,8 @@ var app = {
 
         tagContents.innerHTML = app.tagTemplate(tag);
 
-        navigator.notification.vibrate(100);        
+        navigator.notification.vibrate(100);
+		playAudio("http://www.voicerss.org/controls/speech.ashx?hl=ko-kr&src=%EC%B6%9C%EC%84%9D%EC%B2%B4%ED%81%AC%EA%B0%80%20%EC%99%84%EB%A3%8C%EB%90%98%EC%97%88%EC%8A%B5%EB%8B%88%EB%8B%A4.&c=mp3&rnd=0.36462109815329313");
     },
     clearScreen: function () {
         
@@ -195,4 +196,20 @@ function tnfToString(tnf) {
         break;     
     }
     return value;
+}
+
+function playAudio(url) {
+    // Play the audio file at url
+    var my_media = new Media(url,
+        // success callback
+        function () {
+            console.log("playAudio():Audio Success");
+        },
+        // error callback
+        function (err) {
+            console.log("playAudio():Audio Error: " + err);
+        }
+    );
+    // Play audio
+    my_media.play();
 }
