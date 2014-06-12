@@ -47,8 +47,6 @@ var app = {
         app.compileTemplates();
         app.addTemplateHelpers();
         app.showInstructions();
-		var media = new Media("../snd/sound.mp3", return true);
-		media.play();
     },
     onNfc: function (nfcEvent) {
         
