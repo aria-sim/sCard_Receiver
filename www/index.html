@@ -14,8 +14,21 @@
             Scan a tag to being.
         </div>
     </div>
+	
+	<script id="tag-template" type="text/x-handlebars-template">
+        {{#each ndefMessage}}  {{! does not read well, iterating on records non messages}}
+        <div class='record'>
+            Record {{ @index }}:<br/>
+            TNF: <b>{{ tnfToString tnf }}</b><br/>        
+            {{#if tnf}}
+                Payload: <b>{{ decodePayload this }}</b><br/>
+            {{/if}}
+        </div>
+        {{/each}}
+    </script>
 
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/handlebars.js"></script>
     <script type="text/javascript" charset="utf-8" src="js/index.js"></script>
     <script type="text/javascript">
         app.initialize();

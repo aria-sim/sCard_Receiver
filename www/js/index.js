@@ -43,6 +43,10 @@ var app = {
                 failure
             );
         }
+
+        app.compileTemplates();
+        app.addTemplateHelpers();
+        app.showInstructions();
     },
     onNfc: function (nfcEvent) {
         
@@ -51,7 +55,7 @@ var app = {
         console.log(JSON.stringify(nfcEvent.tag));
         app.clearScreen();
 
-        tagContents.innerHTML = tag.record;    
+        tagContents.innerHTML = app.nonNdefTagTemplate(tag);    
         navigator.notification.vibrate(100);        
     },
     onNdef: function (nfcEvent) {
@@ -68,9 +72,61 @@ var app = {
             tag.canMakeReadOnly = tag.isLockable;
         }
 
-        tagContents.innerHTML = tag.record;
+        tagContents.innerHTML = app.tagTemplate(tag);
 
         navigator.notification.vibrate(100);        
+    },
+    clearScreen: function () {
+        
+        tagContents.innerHTML = "";
+        
+    },
+    showInstructions: function () {
+
+        var hidden = document.getElementsByClassName('hidden');
+        if (hidden && hidden.length) {
+            hidden[0].className = 'instructions';
+        }
+        
+    },
+    compileTemplates: function () {
+
+        var source;
+                    
+        source = document.getElementById('non-ndef-template').innerHTML;
+        app.nonNdefTagTemplate = Handlebars.compile(source);
+
+        source = document.getElementById('tag-template').innerHTML;
+        app.tagTemplate = Handlebars.compile(source);
+        
+    },
+    addTemplateHelpers: function () {
+        
+        Handlebars.registerHelper('bytesToString', function(byteArray) { 
+            return nfc.bytesToString(byteArray);
+        });
+
+        Handlebars.registerHelper('bytesToHexString', function(byteArray) {
+            return nfc.bytesToHexString(byteArray); 
+        });
+
+        // useful for boolean
+        Handlebars.registerHelper('toString', function(value) {  
+            return String(value);  
+        });
+
+        Handlebars.registerHelper('tnfToString', function(tnf) {  
+            return tnfToString(tnf);  
+        });
+
+        Handlebars.registerHelper('decodePayload', function(record) {
+            return decodePayload(record);
+        });
+        
+        Handlebars.registerHelper('pluralize', function(number, single, plural) {
+          if (number === 1) { return single; }
+          else { return plural; }
+        });     
     }
 };
 
