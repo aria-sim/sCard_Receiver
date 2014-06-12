@@ -75,7 +75,7 @@ var app = {
         tagContents.innerHTML = app.tagTemplate(tag);
 
         navigator.notification.vibrate(100);
-		playAudio("snd/sound1.mp3");
+		playAudio("file://android_asset/www/snd/sound1.mp3");
     },
     clearScreen: function () {
         
